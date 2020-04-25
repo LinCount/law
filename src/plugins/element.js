@@ -9,7 +9,12 @@ import {
     Image,
     Row,
     Col,
-    Avatar
+    Avatar,
+    Menu,
+    Input,
+    Select,
+    Option,
+    Button
 } from 'element-ui'
 Vue.use(Container)
 Vue.use(Header)
@@ -21,3 +26,8 @@ Vue.use(Image)
 Vue.use(Row)
 Vue.use(Col)
 Vue.use(Avatar)
+Vue.use(Menu)
+Vue.use(Input)
+Vue.use(Select)
+Vue.use(Option)
+Vue.use(Button)
