@@ -14,7 +14,8 @@ import {
     Input,
     Select,
     Option,
-    Button
+    Button,
+    Card
 } from 'element-ui'
 Vue.use(Container)
 Vue.use(Header)
@@ -31,3 +32,4 @@ Vue.use(Input)
 Vue.use(Select)
 Vue.use(Option)
 Vue.use(Button)
+Vue.use(Card)

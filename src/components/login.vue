@@ -27,47 +27,37 @@
         </el-col>
     </el-row>
   </el-header>
-  <el-container >
-  <!--导航部分-->
-  <div class="nav">
-           <el-menu class="nav-menu" mode="horizontal" @select="handleSelect" >
+  <el-header>
+    <el-container direction='vertical'>
+    <!--导航部分-->
+      <div class="nav">
+           <el-menu class="nav-menu" mode="horizontal">
              <el-menu-item>
                &#12288; &#12288; &#12288; &#12288;&#12288; &#12288;&#12288; &#12288; &#12288; &#12288;&#12288; 
-                </el-menu-item>
-            <el-submenu index="1">
-              <template slot="title">首 &#12288;页</template>
-              <el-menu-item index="1-1">选项1</el-menu-item>
-              <el-submenu index="1-2">
-                <template slot="title">选项4</template>
-                <el-menu-item index="1-2-1">选项1</el-menu-item>
-                <el-menu-item index="1-2-2">选项2</el-menu-item>
-                <el-menu-item index="1-2-3">选项3</el-menu-item>
-              </el-submenu>
-            </el-submenu>
-            <el-menu-item index="3">法律新闻</el-menu-item>
-            <el-menu-item index="4">案例分析</el-menu-item>
-            <el-menu-item index="5">法律咨询</el-menu-item>
-            <el-menu-item index="6">交流学习</el-menu-item>
+              </el-menu-item>
+              <template v-for="item in menuItems">
+                <el-menu-item :index="item.dex" :key="item.url"><router-link :to="item.url">{{item.name}}</router-link></el-menu-item>
+              </template>
              <el-menu-item> &#12288; &#12288;</el-menu-item>
             <el-menu-item> 
               <div>
                 <!--搜索框-->
-                <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
-                  <el-select v-model="select" slot="prepend" placeholder="请选择">
-                    <el-option label="餐厅名" value="1"></el-option>
-                  </el-select>
+                <el-input placeholder="请输入内容" v-model="findstr" class="input-with-select">
                   <el-button slot="append" icon="el-icon-search"></el-button>
                 </el-input>
               </div>
             </el-menu-item>
           </el-menu>
-  </div>
-</el-container>
+     </div>
+   </el-container>
+  </el-header>
   <el-container>
     <!--主体部分-->
     <el-container>
       <el-aside width="100px"></el-aside>
-      <el-main>Main</el-main>
+      <el-main>
+        <router-view/>
+      </el-main>
       <el-aside width="100px"></el-aside>
     </el-container>
     <!--脚部部分-->
@@ -83,16 +73,27 @@
 </el-container> 
 </template>
 <script>
+
 export default {
     data() {
         return {
-            value: ture
+            select : '',
+            findstr: '',
+            menuItems:[
+              {name:'首页',url:'/first',dex:'1'},
+              {name:'法律新闻',url:'/new',dex:'2'},
+              {name:'案例分析',url:'/',dex:'3'},
+              {name:'法律咨询',url:'/',dex:'4'},
+              {name:'交流学习',url:'/',dex:'5'},
+              
+            ]
+            
         }
-    },
+    }
+    }
     methods: {
         
     }
-}
 </script>
 <style lang="less" scoped>
 .index{
