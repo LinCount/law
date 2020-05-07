@@ -1,14 +1,14 @@
 <template>
     <!--轮播图组件-->
-    <el-carousel height="520px" :interval="3000" arrow="always">
+    <el-carousel height="400px" :interval="3000" arrow="always">
         <el-carousel-item>
-            <img src="" alt="">
+            <img src="../assets/img/active.jpg" alt="">
         </el-carousel-item>
         <el-carousel-item>
-            <img src="" alt="">
+            <img src="../assets/img/active.jpg" alt="">
         </el-carousel-item>
         <el-carousel-item>
-            <img src="" alt="">
+            <img src="../assets/img/active.jpg" alt="">
         </el-carousel-item>
     </el-carousel>
 </template>

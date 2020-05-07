@@ -59,12 +59,11 @@ export default {
             select : '',
             findstr: '',
             menuItems:[
-              {name:'首页',url:'/index',dex:'1'},
-              {name:'法律新闻',url:'/new',dex:'2'},
-              {name:'案例分析',url:'/3',dex:'3'},
-              {name:'法律咨询',url:'/4',dex:'4'},
-              {name:'交流学习',url:'/5',dex:'5'},
-              
+              {name:'首页',url:'/index',dex:'index'},
+              {name:'法律事务',url:'/things',dex:'things'},
+              {name:'粘个贴吧',url:'/withus',dex:'withus'},
+              {name:'条例查找',url:'/findLaw',dex:'findLaw'},
+              {name:'交流学习',url:'/learn',dex:'learn'},
             ]
             
         }
