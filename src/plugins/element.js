@@ -16,7 +16,19 @@ import {
     Option,
     Button,
     Card,
-    PageHeader
+    PageHeader,
+    Autocomplete,
+    Carousel,
+    Pagination,
+    Tabs,
+    TabPane,
+    Divider,
+    Form,
+    Tag,
+    Badge,
+    Upload,
+    Collapse,
+    Radio
 } from 'element-ui'
 Vue.use(Container)
 Vue.use(Header)
@@ -35,3 +47,15 @@ Vue.use(Option)
 Vue.use(Button)
 Vue.use(Card)
 Vue.use(PageHeader)
+Vue.use(Autocomplete)
+Vue.use(Carousel)
+Vue.use(Pagination)
+Vue.use(Tabs)
+Vue.use(TabPane)
+Vue.use(Divider)
+Vue.use(Form)
+Vue.use(Tag)
+Vue.use(Badge)
+Vue.use(Upload)
+Vue.use(Collapse)
+Vue.use(Radio)

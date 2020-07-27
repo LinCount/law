@@ -29,7 +29,7 @@
         </div>
      <div class="nav">
        <el-row>
-          <el-col :span="4"><div class=""> &#12288; &#12288; &#12288; &#12288;&#12288; &#12288;</div></el-col>
+          <el-col :span="4" ><div class=""> &#12288; &#12288; &#12288; </div></el-col>
           <template v-for="item in menuItems">
             <el-col :span="2" :index="item.dex" :key="item.url">
               <div class="nav-col">
@@ -37,18 +37,16 @@
               </div>
             </el-col>
           </template>
-          <el-col :span="10">
-            <div class="">
-               <!--搜索框-->
-                <el-input placeholder="请输入内容" v-model="findstr" class="findstr">
-                    <el-button slot="append" icon="el-icon-search"></el-button>
-                </el-input>
+          <el-col :span="4">
+            <div>
+               <router-link to="/login">登录</router-link>
+               &#12288; &#12288;
+               <router-link to="/register">注册</router-link>
             </div>
           </el-col>
         </el-row>
+         <el-divider></el-divider>
      </div>
-       <!--切割线-->
-      <div class="tableTitle"><span class="midText"></span></div>
     </div>
 </template>
 <script>
@@ -56,16 +54,14 @@ export default {
     name: "Header",
     data() {
         return {
-            select : '',
-            findstr: '',
             menuItems:[
               {name:'首页',url:'/index',dex:'index'},
-              {name:'法律事务',url:'/things',dex:'things'},
-              {name:'粘个贴吧',url:'/withus',dex:'withus'},
-              {name:'条例查找',url:'/findLaw',dex:'findLaw'},
-              {name:'交流学习',url:'/learn',dex:'learn'},
+              {name:"律师咨询",url:'/things',dex:'things'},
+              {name:'论坛咨询',url:'/withus',dex:'withus'},
+              {name:'业务咨询',url:'/consultSream',dex:'consultSream'},
+              {name:'查找法律',url:'/findLaw',dex:'learn'},
+              {name:'律师加盟',url:'/learn',dex:'learn'}
             ]
-            
         }
     },
     methods: {
@@ -123,16 +119,7 @@ export default {
 .nav-col{
   margin-top: 2px;
 }
-.el-input{
-    max-width: 300px;
-    min-width: 100px;
-}
-.el-button{
-    max-width: 50px;
-    min-width: 30px;
-    background: #e9eef3;
-    text-align: center;
-}
+
 .router-link-active {     //点击时去掉下划线
   text-decoration: none;
 }
@@ -141,21 +128,5 @@ a {
   text-decoration: none; //去掉原有链接文字下划线  字体颜色
   color:steelblue;
 }
-.tableTitle {//切割线
-    position: relative;
-    margin: 0 auto;
-    width: 100%;
-    height: 1px;
-    background-color: #d4d4d4;
-    text-align: center;
-    font-size: 16px;
-    color: rgba(101, 101, 101, 1);
-  }
- .midText {//切割线
-    position: absolute;
-    left: 50%;
-    background-color: #ffffff;
-    padding: 0 15px;
-    transform: translateX(-50%) translateY(-50%);
-  }
+
 </style>

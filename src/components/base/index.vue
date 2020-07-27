@@ -63,6 +63,26 @@
               </el-col>
             </el-row>
           </div>
+          <div class="lawers1">
+            <!--律师-->
+            <div  class="lawhead">
+               &#12288;&#12288;
+               <a style="font-size:30px;color:black">精选律师</a>&#12288;口碑为王，民意之选，好评率是我们的核心准则
+            </div>
+              <el-row :gutter="0" type="flex"  justify="space-around">
+                    <el-col :span="6" class="adverThings1" v-for="item in lawfine" :key="item.lid">
+                          <div class="grid-content1">
+                              <el-card :body-style="{ padding: '0px' }">
+                                <img :src="item.imgUrl">
+                                <br><a style="font-size:17px;color:green">&#12288;{{item.name}}~律师</a>
+                                <br><br>&#12288;{{item.introduce}}
+                                <br><br>&#12288;&#12288;&#12288;
+                                <center style="font-size:13px;color:green" class="el-icon-phone">{{item.phone}}</center><br>
+                              </el-card>
+                         </div>
+                    </el-col>
+                </el-row>
+          </div>
           <!--事务所推荐和其他推荐-->
           <div class="area1">
            <el-row :gutter="5" type="flex" class="row-bg" justify="space-around">
@@ -111,10 +131,11 @@ export default {
               {rid:'5',title:'最高人民法院关于认可和执行台湾地区法院民事判决的规定',time:'2014-04-23',from:' 最高人民法院'},
               {rid:'6',title:'最高人民法院关于人民法院办理自赔案件程序的规定',time:'2014-04-23',from:' 最高人民法院'}
             ],//法律修订内容
-            thing:[
-              {},
-              {},
-              {}
+            lawfine:[
+              {lid:'1',imgUrl:'http://localhost:8080/static/img/active.bg1.jpg',name:'张博',introduce:'张博律师曾任国内上市公司—青岛啤酒华南事业部法务，现为北京市...',phone:'133 9218 2040'},
+              {lid:'2',imgUrl:'http://localhost:8080/static/img/active.bg2.jpg',name:'张博',introduce:'张博律师曾任国内上市公司—青岛啤酒华南事业部法务，现为北京市...',phone:'133 9218 2040'},
+              {lid:'3',imgUrl:'http://localhost:8080/static/img/active.bg3.jpg',name:'张博',introduce:'张博律师曾任国内上市公司—青岛啤酒华南事业部法务，现为北京市...',phone:'133 9218 2040'},
+              {lid:'4',imgUrl:'http://localhost:8080/static/img/active.bg4.jpg',name:'张博',introduce:'张博律师曾任国内上市公司—青岛啤酒华南事业部法务，现为北京市...',phone:'133 9218 2040'}
             ]
         }
     },
@@ -136,7 +157,6 @@ export default {
   width: 1100px;
   align-content: center;
   margin-left: 140px;
-  margin-right: 140px;
   background: rgba(252, 252, 252, 0.973);
   margin-top: 0px;
 }
@@ -199,6 +219,10 @@ export default {
 .grid-content {
   border-radius: 4px;
   min-height: 36px;
+}
+.grid-content1{
+    width: 100%;
+    height: 100%;
 }
 .new{
   width: 530px;
@@ -263,4 +287,23 @@ li{
     padding: 0 15px;
     transform: translateX(-50%) translateY(-50%);
   }
+.lawers1{
+     width: 100%;
+     height: 400px;
+     background: rgba(251, 251, 251, 0.973);
+     text-align: left;
+     margin-top: 20px;
+}
+.lawhead{
+    width: 100%;
+    height: 50px;
+
+}
+.adverThings1{
+  width: 260px;
+  height: 300px;
+  margin-top: 10px;
+  margin-left: 0px;
+  background: rgba(251, 251, 251, 0.973);
+}
 </style>

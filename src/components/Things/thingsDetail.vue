@@ -30,15 +30,14 @@ export default {
 </script>
 <style lang="less" scoped>
 .one{
-  min-width: 1400px;
+  min-width: 1300px;
   margin-top: 0px;
   background:  #ffffff;
 }
 .main{
   width: 1100px;
   align-content: center;
-  margin-left: 140px;
-  margin-right: 140px;
+  margin-left: 100px;
   background:rgba(252, 252, 252, 0.973);
   margin-top: 0px;
 }
