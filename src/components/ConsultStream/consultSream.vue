@@ -35,17 +35,20 @@
                             </el-form-item>
                             <el-form-item label="上传附件" prop="region">
                                 <el-upload 
-                                    action="http://localhost:8080/src/assets/img/"
+                                    :action="action"
                                     ref="upload"
+                                    :on-success="onSuccess"
                                     :on-preview="handlePreview"
                                     :on-remove="handleRemove"
                                     :before-remove="beforeRemove"
-                                    multiple
+                                    :before-upload="beforeupload"
+                                    limit="1"
                                     show-file-list
-                                    :limit="3"
+                                    accept=".doc,.docx,.xls,.xlsx,.ppt,.pptx,.pdf,.zip,.rar"
+                                    name="file"
                                     :on-exceed="handleExceed">
                                     &#12288;<el-button size="small" type="primary">上传附件<i class="el-icon-upload el-icon--right"></i></el-button>
-                                    <div slot="tip" >tips</div>
+                                    <div slot="tip" >上传文件可为doc,docx,xls,xlsx,ppt,pptx,pdf,zip,rar</div>
                                 </el-upload>
                             </el-form-item>
                             <el-form-item label="手机号码 " required>
@@ -60,7 +63,7 @@
                             <el-form-item label="验证码" required>
                                 &#12288;
                                 <el-input
-                                v-model="orderForm.code"
+                                v-model="code"
                                 minlength="4"
                                 maxlength="4"
                                 style="width:100px"
@@ -81,7 +84,7 @@
                                 ></el-input>
                             </el-form-item>
                             <el-form-item style="text-align:center">
-                                <el-button type="primary" >发布悬赏</el-button>
+                                <el-button type="primary" @click="onSubmit" >发布悬赏</el-button>
                                 <el-button>重置</el-button>
                             </el-form-item>
                         </el-form>
@@ -89,17 +92,61 @@
                     <el-col :span="6">
                         <div class="messageTips">
                             <el-collapse v-model="activeNames" accordion>
-                                <el-collapse-item name="1" title='未读消息'>
-                                    <div></div>
+                                <el-collapse-item  name="1">
+                                    <template slot="title">
+                                        <el-badge :is-dot="message.noReadNumber!=''" >
+                                            未读消息
+                                        </el-badge>
+                                    </template>
+                                    <div>
+                                        <el-card class="box-card">
+                                            <div v-for="o in 4" :key="o" class="text item">
+                                                {{'列表内容 ' + o }}
+                                            </div>
+                                        </el-card>
+                                    </div>
                                 </el-collapse-item>
-                                <el-collapse-item name="2" title="已读消息">
-                                    <div></div>
+                                <el-collapse-item name="2">
+                                    <template slot="title">
+                                        <el-badge :is-dot="message.readNumber!=''" >
+                                            已读消息
+                                        </el-badge>
+                                    </template>
+                                    <div>
+                                        <el-card class="box-card">
+                                            <div v-for="o in 4" :key="o" class="text item">
+                                                {{'列表内容 ' + o }}
+                                            </div>
+                                        </el-card>
+                                    </div>
                                 </el-collapse-item>
-                                <el-collapse-item name="3" title="任务进行中">
-                                    <div></div>
+                                <el-collapse-item name="3">
+                                    <template slot="title">
+                                        <el-badge :is-dot="message.havingTask!=''" >
+                                            任务进行中 
+                                        </el-badge>
+                                    </template>
+                                    <div>
+                                        <el-card class="box-card">
+                                            <div v-for="o in 4" :key="o" class="text item">
+                                                {{'列表内容 ' + o }}
+                                            </div>
+                                        </el-card>
+                                    </div>
                                 </el-collapse-item>
-                                <el-collapse-item name="4" title="任务已完成">
-                                    <div></div>
+                                <el-collapse-item name="4">
+                                    <template slot="title">
+                                        <el-badge :is-dot="message.finishTask!=''" >
+                                            任务已完成
+                                        </el-badge>
+                                    </template>
+                                    <div>
+                                        <el-card class="box-card">
+                                            <div v-for="o in 4" :key="o" class="text item">
+                                                {{'列表内容 ' + o }}
+                                            </div>
+                                        </el-card>
+                                    </div>
                                 </el-collapse-item>
                             </el-collapse>
                         </div>
@@ -115,24 +162,30 @@
 export default {
     data() {
         return {
+            action:'/api/data/upload',//上传文件路径
             activeNames:[''],
-            orderForm:{
+            code:'',
+            orderForm:{//文件表单
+                userId:'',
                 type:'',
                 content:'',
                 phone:'',
-                code:'',
                 pay:'1',
+                fileName:'',
                 money:''
+            },
+            message:{
+                readNumber:'',
+                noReadNumber:'',
+                finishTask:'',
+                havingTask:'',
             },
             selects:[
                {key:1,value:'民间借贷'},{key:2,value:'婚姻家庭'},{key:3,value:'财产继承'},{key:4,value:'消费维权'},
                {key:5,value:'劳动仲裁'},{key:6,value:'交通事故'},{key:7,value:'刑事案件'},{key:8,value:'公司'},
                {key:9,value:'合同纠纷'},{key:10,value:'拆迁征收'},{key:11,value:'人身损害'},{key:12,value:'其他案件'}
            ],
-           fileList:[
-               {name:'',url:''},
-               {name:'',url:''}
-           ]
+           timer : null,//用来接收setInterval()返回的 ID 值
         }
     },
     methods: {
@@ -146,9 +199,68 @@ export default {
             this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
         },
         beforeRemove(file, fileList) {
+            this.orderForm.fileName='';
             return this.$confirm(`确定移除 ${ file.name }？`);
+        },
+        beforeupload(file){
+            
+        },
+        onSuccess(ref){
+            this.orderForm.fileName=ref;
+            console.log(ref+'上传成功');
+        },
+        onSubmit(){
+            this.orderForm.userId=localStorage.getItem(userId);
+            if(this.orderForm.userId===""){
+               this.$$router.push('/login');
+            }
+            var order =JSON.stringify(this.orderForm);
+            this.$http({
+                    method: 'post',
+                    url: '/data/uploadInfo',
+                    data: order
+                }).then(res => {
+                    console.log("订单生成");
+                     this.$router.push('/pay');
+                }).catch(error=>{
+                    alert("发布失败!!!");
+                })
+        },
+        initNumber: function () {//获取消息接口
+            let seft=this;
+            this.api({
+            url: "/data/initNumber",
+            method: "get",
+            }).then(res => {
+                seft.message.readNumber=res.data.readNumber;
+                seft.message.noReadNumber=res.data.noReadNumber;
+                seft.message.finishTask=res.data.finishTask;
+                seft.message.havingTask=res.data.havingTask;
+            })
+        },
+        getUserId: function (){
+            return localStorage.getItem(userId);
+        },
+
+    },
+    mounted: function(){//定时访问接口
+        let seft=this;
+        function freshNumber (){//刷新消息数字
+        if(this.getUserId===""){
+            //用户未登录，不进行动作
+        }else{
+            this.initNumber();
         }
-    }
+
+        }
+        self.timer = setInterval(freshTable, 3000);//定时间隔，
+    },
+    //摧毁定时接口
+    destroyed: function() { 
+        clearInterval(this.timer);
+        this.timer = null;
+    },
+
 }
 </script>
 <style lang="less" scoped>
@@ -186,4 +298,15 @@ export default {
 .collapse{
     color: aqua;
 }
+.text {
+    font-size: 14px;
+  }
+
+  .item {
+    padding: 10px 0;
+  }
+
+  .box-card {
+    width: 480px;
+  }
 </style>

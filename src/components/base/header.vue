@@ -20,8 +20,13 @@
                     <el-col :span="6">
                     <div class="grid-content ">
                         <div class="header-ico-contain">
-                            昵称：xxxx<br>
-                            账户：xxxxx
+                          <div v-if="uName == ''">
+                            未登录<br>请前往登录
+                          </div>
+                          <div v-else> 
+                            昵称：{{uName}}<br>
+                            欢迎回来！！
+                          </div>
                         </div>
                     </div>
                 </el-col>
@@ -37,6 +42,14 @@
               </div>
             </el-col>
           </template>
+          <el-col :span="2">
+            <div class="nav-col"  v-if="userId===''">
+              <router-link to="/learn">律师加盟</router-link>
+            </div>
+            <div class="nav-col" v-else>
+              <router-link to="/order">律师专属</router-link>
+            </div>
+          </el-col>
           <el-col :span="4">
             <div>
                <router-link to="/login">登录</router-link>
@@ -54,18 +67,26 @@ export default {
     name: "Header",
     data() {
         return {
-            menuItems:[
-              {name:'首页',url:'/index',dex:'index'},
-              {name:"律师咨询",url:'/things',dex:'things'},
-              {name:'论坛咨询',url:'/withus',dex:'withus'},
-              {name:'业务咨询',url:'/consultSream',dex:'consultSream'},
-              {name:'查找法律',url:'/findLaw',dex:'learn'},
-              {name:'律师加盟',url:'/learn',dex:'learn'}
+          userId:'',
+          menuItems:[
+            {name:'首页',url:'/index',dex:'index'},
+            {name:"律师咨询",url:'/things',dex:'things'},
+            {name:'论坛咨询',url:'/withus',dex:'withus'},
+            {name:'业务咨询',url:'/consultSream',dex:'consultSream'},
+            {name:'查找法律',url:'/findLaw',dex:'findLaw'},
             ]
         }
     },
-    methods: {
+    props:['uName','uId'],
+    methods() {
         
+    },
+    created(){
+      this.userId=localStorage.getItem('userId');
+      console.log(this.userId);
+    },
+    mounted(){
+      
     },
 }
 </script>

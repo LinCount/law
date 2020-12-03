@@ -28,7 +28,10 @@ import {
     Badge,
     Upload,
     Collapse,
-    Radio
+    Radio,
+    Popover,
+    ToolTip,
+    InfiniteScroll
 } from 'element-ui'
 Vue.use(Container)
 Vue.use(Header)
@@ -59,3 +62,6 @@ Vue.use(Badge)
 Vue.use(Upload)
 Vue.use(Collapse)
 Vue.use(Radio)
+Vue.use(Popover)
+Vue.use(ToolTip)
+Vue.use(InfiniteScroll)

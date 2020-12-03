@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from '../components/home.vue'
 import Index from '../components/base/index.vue'
 import Things from '../components/Things/things.vue'
+import Exchange from '../components/Things/exchange.vue'
 import ThingsDetail from '../components/Things/thingsDetail.vue'
 import Withus from '../components/Withus/withus.vue';
 import FindLaw from '../components/Findlaw/findLaw.vue';
@@ -12,6 +13,9 @@ import Register from '../components/base/register.vue'
 import Forget from '../components/base/forget.vue'
 import Error from '../components/error.vue'
 import ConsultSream from '../components/ConsultStream/consultSream'
+import NewDetail from '../components/Things/newDetail.vue'
+import Pay from '../components/ConsultStream/pay'
+import Order from '../components/order/order.vue'
 Vue.use(Router)
 
 const router = new Router({
@@ -31,6 +35,10 @@ const router = new Router({
             { path: '/forget', component: Forget },
             { path: '/error', component: Error },
             { path: '/consultSream', component: ConsultSream },
+            { path: '/newDetail', component: NewDetail },
+            { path: '/pay', component: Pay },
+            { path: '/exchange', component: Exchange },
+            { path: '/order', component: Order },
         ]
     }]
 });

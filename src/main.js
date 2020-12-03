@@ -35,7 +35,7 @@ const instence = axios.create({
 // 在发送请求之前做些什么("请求拦截器")
 instence.interceptors.request.use(config => {
     //假设接口需要对接token，可以用store保存token,在拦截器中设置到header中
-    if (localStorage.getItem('Authorization')) {
+    if (localStorage.getItem('Authorization') !== null) {
         config.headers.Authorization = localStorage.getItem('Authorization');
     }
     return config;
@@ -46,8 +46,9 @@ instence.interceptors.request.use(config => {
 //respone拦截器==>对响应做处理
 instence.interceptors.response.use(
     response => { //成功请求到数据
-        if (response.data.statusCode == 200) {
-            return response.data.data
+        console.log(response.data)
+        if (response.data.code === 200) {
+            return response.data
         } else {
             return "请求错误"
         }

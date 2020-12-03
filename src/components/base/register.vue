@@ -77,8 +77,15 @@ export default {
                     },
                 }).then(res => {
                     //检验code是否正确
-                    _this.$router.push('/login');
-                    alert('注册成功');
+                    console.log(res.code)
+                    if(res.code===200){
+                         _this.$router.push('/login');
+                        alert('注册成功');
+                    }else{
+                         _this.$router.push('/register');
+                        alert(res.msg);
+                    }
+                    
                     }).catch(error => {
                     alert('注册失败');
                     console.log(error);

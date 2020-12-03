@@ -54,22 +54,44 @@
                          <div class="self">
                              <br>
                              <el-badge :value="12" class="tagInfo">
-                                 <a href=""><el-tag type="success">已发帖</el-tag></a>
+                                        <el-popover
+                                        placement="right"
+                                        width="400"
+                                        trigger="hover">
+                                        <el-table :data="gridData">
+                                            <el-table-column width="150" property="date" label="日期"></el-table-column>
+                                            <el-table-column width="100" property="name" label="姓名"></el-table-column>
+                                            <el-table-column width="300" property="address" label="地址"></el-table-column>
+                                        </el-table>
+                                        <el-tag type="success" slot="reference">发帖</el-tag>
+                                        </el-popover>
                              </el-badge>
                              <el-badge :value="12" class="tagInfo">
-                                 <a href=""><el-tag type="warning">评论</el-tag></a>
+                                 <a href="">
+                                    <el-tag type="warning">
+                                        评论
+                                    </el-tag>
+                                </a>
                              </el-badge>
                              <el-badge :value="12" class="tagInfo">
-                                 <a href=""><el-tag>回复</el-tag></a>
+                                 <a href="">
+                                     <el-tag>回复</el-tag>
+                                    </a>
                              </el-badge>
                              <el-badge :value="12" class="tagInfo">
-                                 <a href=""><el-tag type="success">点赞</el-tag></a>
+                                 <a href="">
+                                    <el-tag type="success">点赞</el-tag>
+                                </a>
                              </el-badge>
                              <el-badge :value="12" class="tagInfo">
-                                 <a href=""><el-tag type="warning">点踩</el-tag></a>
+                                 <a href="">
+                                    <el-tag type="warning">点踩</el-tag>
+                                </a>
                              </el-badge>
                              <el-badge :value="12" class="tagInfo">
-                                 <a href=""><el-tag>律师评论</el-tag></a>
+                                <a href="">
+                                    <el-tag>律师评论</el-tag>
+                                </a>
                              </el-badge>
                          </div>
                          <br>
@@ -152,6 +174,24 @@ export default {
             activeName:'one',
             withLaw:[
                 {lid:1,name:'小刘',imgUrl:'E:\\vue\\law\\src\\assets\\img\\uslaw.jpg',codeUrl:'E:\\vue\\law\\src\\assets\\img\\lawyer_code.jpg'}
+            ],
+             gridData: [{
+                date: '2016-05-02',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1518 弄'
+                }, {
+                date: '2016-05-04',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1518 弄'
+                }, {
+                date: '2016-05-01',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1518 弄'
+                }, {
+                date: '2016-05-03',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1518 弄'
+                }
             ],
         }
     },

@@ -47,7 +47,6 @@
 </template>
 <script>
 import SIdentify from '../utils/sidentify.vue'
-
 export default {
     components: { SIdentify },
     data() {
@@ -57,7 +56,6 @@ export default {
             password:"",
             code:''//输入的code
             },
-            
             identifyCodes: "1234567890",
             identifyCode: "",
         }
@@ -90,13 +88,21 @@ export default {
                 this.$http({
                     method: 'post',
                     url: '/user/login',
-                    data: _this.loginForm
+                    data: {
+                        'account':this.loginFrom.account,
+                        'password':this.loginFrom.password
+                    }
                 }).then(res => {
-                    console.log(res.data);
-                    _this.userToken = res.data.data.body.token;
+                    console.log(res.msg);
+                    _this.userToken = res.data.token;
                     // 将用户token保存到vuex中
-                    _this.changeLogin({ Authorization: _this.userToken });
-                    _this.$router.push('/home');
+                    localStorage.setItem('userId',res.data.userId);
+                    localStorage.setItem('Authorization',res.data.token);
+                    localStorage.setItem('userName',res.data.userName);
+                    // _this.changeLogin({ Authorization: _this.userToken });
+                    console.log(localStorage.getItem('Authorization'))
+                    _this.$router.push('/index');
+                    _this.setUser(res.data.userName,res.data.userId);
                     alert('登陆成功');
                     }).catch(error => {
                     alert('账号或密码错误');
@@ -106,6 +112,10 @@ export default {
                     alert("验证码不正确");
                 }
             console.log(JSON.stringify(this.loginFrom));
+        },
+         setUser:function(userName,userId){//组件间传值
+            this.$emit('tuserName',userName);
+            this.$emit('tuserId',userId);
         },
     },
     mounted(){
