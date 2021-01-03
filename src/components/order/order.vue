@@ -31,9 +31,27 @@
                               </el-col>
                             </el-row>
                         </div>
-                        单子展示
+                        <!--单子展示-->
                         <div>
-                            
+                            <!--拼接展示-->
+                            <div class="show-content">
+                                <br>
+                               <div class="message" v-for="item in messageList" :key="item.id">
+                                    <el-row :gutter="20">
+                                        <el-col :span="16">
+                                             &#12288;&#12288;<big> <big> {{item.content}} </big> </big>  <br>
+                                             &#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;
+                                             金额：{{item.money}}&#12288;&#12288;
+                                            发起人：{{item.author}} &#12288;时间：{{item.time}}
+                                        </el-col>
+                                        <!--按钮区-->
+                                        <el-col :span="8">
+                                            <el-button type="primary" @click="tips">接受</el-button>
+                                            <el-button @click="getDetail">查看详情</el-button>
+                                        </el-col>
+                                    </el-row>
+                                </div>
+                            </div>
                         </div>
                     </el-col>
                     <!--右边-->
@@ -55,7 +73,7 @@
                                     <el-button style="width:100%" type="primary" >充值</el-button>
                                   </div>
                               </el-col>
-                              <el-col :span="11" v-bind="allMoney">
+                              <el-col :span="11">
                                   <div class="money">
                                     总赚取金额<br>
                                     <big><big>CNY&#12288;{{allMoney}}</big></big>
@@ -69,67 +87,67 @@
                               </el-col>
                             </el-row>
                         </div>
-                        用户单子检索条件
-                        <div>
-
+                        <!--用户单子检索条件-->
+                        <div class="search">
+                            <div class="search1"><br>
+                                检索-详细检索  <br><br>
+                                类型:
+                                <el-select v-model="type" placeholder="请选择类型">
+                                    <el-option
+                                    v-for="item in selects"
+                                    :key="item.value"
+                                    :value="item.value">
+                                    </el-option>
+                                </el-select><br>
+                                <br>
+                                费用区间：
+                                <el-input-number size="mini" v-model="num1" :min=0 :max="10"></el-input-number>
+                                <el-input-number size="mini" v-model="num2" :min="num1"></el-input-number><br><br>
+                                关键字：<el-input v-model="world" placeholder="输入检索关键字" style="width:230px"></el-input>
+                                <br><br>
+                                <center><el-button type="primary" size="min">开始检索</el-button></center>
+                            </div>
                         </div>
                     </el-col>
                 </el-row>
+            </div>
+            <div style="height:40px;background:  rgb(250, 250, 250);">
 
-                <el-row type="flex" justify="center">
-                    <el-col :span="4">
-                        <div class="sight">
-                            <el-select v-model="type" placeholder="请选择类型">
-                                <el-option
-                                v-for="item in selects"
-                                :key="item.value"
-                                :value="item.value">
-                                </el-option>
-                            </el-select>
-                            <br>
-                            价格筛选
-                            <br>
-                            附件筛选
-                        </div>
-                    </el-col>
-                    <el-col :span="10">
-                        <div class="sight">
-                            咨询展示
-                        </div>
-                    </el-col>
-                    <el-col :span="4">
-                        <div class="sight">
-                            个人金库
-                        </div>
-                    </el-col>
-                </el-row>
             </div>
         </template>
     </div>
 </div>
 </template>
 <script>
-
 export default {
     data() {
-        
-        return {
+         return {
             type: '',
-            countMoney: '10000',
-            allMoney: '20000',
-            finishWorld:'0',
-            runningWold: '0',
-            orderNun: '0',
-            lasterNum: '0',
+            countMoney: 10000,
+            allMoney: 20000,
+            finishWorld:0,
+            runningWold: 0,
+            orderNun: 0,
+            lasterNum: 0,
+            num1:0,
+            num2:0,
+            world:"",
+            yueFen:'',
             selects:[
                {key:1,value:'民间借贷'},{key:2,value:'婚姻家庭'},{key:3,value:'财产继承'},{key:4,value:'消费维权'},
                {key:5,value:'劳动仲裁'},{key:6,value:'交通事故'},{key:7,value:'刑事案件'},{key:8,value:'公司'},
                {key:9,value:'合同纠纷'},{key:10,value:'拆迁征收'},{key:11,value:'人身损害'},{key:12,value:'其他案件'}
            ],
+           messageList: [
+               {id: 1,content: "请帮忙做一个第三方合同，具体要求看文件",money: "111",author: "11",time: "2020.12.27"},
+               {id: 2,content: "请帮忙做一个第三方合同，具体要求看文件",money: "111",author: "11",time: "2020.12.27"},
+               {id: 3,content: "请帮忙做一个第三方合同，具体要求看文件",money: "111",author: "11",time: "2020.12.27"},
+               {id: 4,content: "请帮忙做一个第三方合同，具体要求看文件",money: "111",author: "11",time: "2020.12.27"},
+           ]
         }
         
     },
-    methods: {
+    methods:{
     goBack(){
         history.back();
         console.log('退出律师专属');
@@ -152,6 +170,13 @@ export default {
 .orderContent{
     width: 100%;
     background:  rgb(250, 250, 250);
+}
+.show-content{
+    width: 100%;
+    height: 600px;
+    margin-top: 30px;
+    background: white;
+    margin-inline-end: 30px;
 }
 .leftBG{
     margin-top: 20px;
@@ -202,6 +227,34 @@ export default {
     background: white;
     margin-top: 70px;
     margin-right: 0px;
+}
+.order-content{
+    width: 100%;
+
+}
+.search{
+    width: 100%;
+    height: 280px;
+    background: white;
+    text-align: left;
+}
+.search1{
+    margin-left: 10px;
+    margin-top: 30px;
+    width: 100%;
+    height: 280px;
+    background: white;
+    text-align: left;
+    
+}
+.message{
+    width: 100%;
+    height: 60px;
+    background: white;
+    margin-top: 10px;
+    font-size: 12px;
+    text-align: left;
+
 }
 .sight{
     background: rgba(251, 251, 251, 0.973);

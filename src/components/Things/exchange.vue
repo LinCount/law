@@ -44,42 +44,26 @@
                     </div>
                 </div>
                 <br>
-                <el-input v-model="chartText" placeholder="请输入咨询内容" style="width:300px"></el-input>
-                <el-button type="primary" icon="el-icon-s-promotion">发送</el-button>
+                <el-input v-model="chartMessage.message" placeholder="请输入咨询内容" style="width:300px"></el-input>
+                <el-button type="primary" icon="el-icon-s-promotion" @click="doSendUser">发送</el-button>
             </div>
         </el-col>
     </el-row>
 </div>
 </template>
 <script>
-
+var websocket = null;
 export default {
     data() {
         return {
-            chartText: '',
+            receiverId:'wqeqwewq-gfg-dffdf',
             count:0,
-            sum:10,
+            sum:2,
             chartArray: [
-                {mid:'0',id: 0,content:'1111'},
-                {mid:'1',id: 1,content:'111'},
-                {mid:'2',id: 0,content:'1111'},
-                {mid:'3',id: 1,content:'111'},
-                {mid:'4',id: 0,content:'1111'},
-                {mid:'5',id: 1,content:'111'},
-                {mid:'6',id: 0,content:'1111'},
-                {mid:'7',id: 1,content:'111'},
-                {mid:'8',id: 0,content:'1111'},
-                {mid:'9',id: 1,content:'111'},
-                {mid:'10',id: 1,content:'111'},
-                {mid:'11',id: 0,content:'1111'},
-                {mid:'12',id: 1,content:'111'},
-                {mid:'13',id: 0,content:'1111'},
-                {mid:'14',id: 1,content:'111'},
-                {mid:'15',id: 1,content:'111'},
-                {mid:'16',id: 0,content:'1111'},
-                {mid:'17',id: 1,content:'111'},
-                {mid:'18',id: 0,content:'1111'},
-                {mid:'19',id: 1,content:'111'}],
+                {mid:'0',id: 0,content:'亲，请问你有哪方面的疑问呢'},
+                {mid:'1',id: 1,content:'你好，我想咨询一下关于。。。。。'},
+                ],
+            chartMessage:{senderId:'',receiverId:'',message:""},
         }
         
     },
@@ -88,13 +72,84 @@ export default {
         history.back();
         console.log('退出咨询详情');
     },
+    createWebsocket(){
+        if ('WebSocket' in window) {
+            websocket = new WebSocket("ws://localhost:8989/websocket/server");
+        } else if ('MozWebSocket' in window) {
+            websocket = new MozWebSocket("ws://localhost:8989/websocket/server");
+        } else {
+            websocket = new SockJS("http://localhost:8989/sockjs/server");
+        }
+        websocket.onopen = this.onOpen();
+        websocket.onmessage = this.onMessage();
+        websocket.onerror = this.onError();
+        websocket.onclose = this.onClose();
+    },
+    //连接成功建立的回调方法
+    onOpen(event) {
+        alert(event.type);
+    },
+    //接收到消息的回调方法
+    onMessage(messageEvent) {
+        console.log(messageEvent.data);
+        var tip={mid:this.sum,id: 1,content:messageEvent.data};
+        this.sum=this.sum+1;
+        this.chartArray.pop(tip);
+    },
+    //连接发生错误的回调方法
+    onError(event) {
+        alert("出现未知错误");
+    },
+    //连接关闭的回调方法
+    onClose(closeEvent) {
+        alert(closeEvent.reason);
+    },
+    doSendUser() {
+        if (websocket.readyState === websocket.OPEN&&this.chartMessage.message!='') {
+            //封装聊天信息{sendId：'',receiverId:'',message:""}
+            this.chartMessage.receiverId=this.receiverId;
+            this.chartMessage.senderId=localStorage.getItem('userId');
+            var msg =JSON.stringify(this.chartMessage);
+            websocket.send(msg);//发送消息
+            this.chartMessage.message='';
+            var tip={mid:this.sum,id: 0,content:this.chartMessage.message};
+            this.sum=this.sum+1;
+        } else {
+            alert("请输入发送内容!");
+        }
+    },
+    close() {
+        websocket.onclose();
+    },
+    websocketClose() {
+        websocket.close();
+        alert("连接关闭");
+    },
+    //获取聊天内容
+    getMessage(messageId,receiverId){
+        this.$http({
+                    method: 'get',
+                    url: `/getMessage/${messageId}/${receiverId}`,
+                }).then(res => {
+                    this.chartArray=res.data;
+                    this.sum=this.chartArray.length();
+                    console.log(res);
+                }).catch(err => {
+                    alert("获取数据错误");
+                })
+    }
+    },
     mounted(){
         
     },
     created(){
-        
+        this.createWebsocket();
+        this.getMessage();
+    },
+    destroyed(){
+        this.close();
     }
-    }
+    
 }
 </script>
 <style lang="less" scoped>

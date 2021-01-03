@@ -31,7 +31,8 @@ import {
     Radio,
     Popover,
     ToolTip,
-    InfiniteScroll
+    InfiniteScroll,
+    InputNumber,
 } from 'element-ui'
 Vue.use(Container)
 Vue.use(Header)
@@ -65,3 +66,4 @@ Vue.use(Radio)
 Vue.use(Popover)
 Vue.use(ToolTip)
 Vue.use(InfiniteScroll)
+Vue.use(InputNumber)

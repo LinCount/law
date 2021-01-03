@@ -42,7 +42,7 @@
                                     :on-remove="handleRemove"
                                     :before-remove="beforeRemove"
                                     :before-upload="beforeupload"
-                                    limit="1"
+                                    limit=1
                                     show-file-list
                                     accept=".doc,.docx,.xls,.xlsx,.ppt,.pptx,.pdf,.zip,.rar"
                                     name="file"
@@ -85,7 +85,7 @@
                             </el-form-item>
                             <el-form-item style="text-align:center">
                                 <el-button type="primary" @click="onSubmit" >发布悬赏</el-button>
-                                <el-button>重置</el-button>
+                                <el-button @click="open">重置</el-button>
                             </el-form-item>
                         </el-form>
                     </el-col>
@@ -220,8 +220,9 @@ export default {
                     url: '/data/uploadInfo',
                     data: order
                 }).then(res => {
+                    this.open();
                     console.log("订单生成");
-                     this.$router.push('/pay');
+                    this.$router.push('/pay');
                 }).catch(error=>{
                     alert("发布失败!!!");
                 })
@@ -241,7 +242,29 @@ export default {
         getUserId: function (){
             return localStorage.getItem(userId);
         },
+        open() {//支付接口
+        const url=require('../../assets/img/pay.jpg');
+        this.$confirm("<img src=" + url + ">", '扫码支付', {
+          confirmButtonText: '确定已支付',
+          cancelButtonText: '取消',
+          dangerouslyUseHTMLString:true,
+          type: 'info',
+          center: true,
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '支付成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消支付'
+          });
+        });
+        },
+        freshTable( ){
 
+        },
     },
     mounted: function(){//定时访问接口
         let seft=this;
@@ -253,7 +276,7 @@ export default {
         }
 
         }
-        self.timer = setInterval(freshTable, 3000);//定时间隔，
+        self.timer = setInterval(this.freshTable, 3000);//定时间隔，
     },
     //摧毁定时接口
     destroyed: function() { 
